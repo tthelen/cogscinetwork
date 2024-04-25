@@ -1,0 +1,6 @@
+Please activate:
+
+{{ request.scheme }}://{{ request.get_host }}{% url 'django_registration_activate' activation_key %}
+
+TODO: Make a clickable link to the activation page
+TODO: write some nice text

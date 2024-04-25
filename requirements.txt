@@ -1,0 +1,6 @@
+django
+Pillow
+django-registration
+django-bootstrap-v5
+django-debug-toolbar
+

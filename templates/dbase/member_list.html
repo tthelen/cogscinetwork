@@ -1,0 +1,48 @@
+{% extends "base12.html" %}
+
+{% block title %}Member List{% endblock %}
+{% block content12 %}
+      <h1 class="title">
+          Members
+      </h1>
+
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nickname</th>
+      <th scope="col">Bachelor</th>
+      <th scope="col">Master</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for member in members %}
+    <tr style="transform: rotate(0);">
+        <th scope="row"><a href="{% url 'profile_show' member.user.pk %}" class="stretched-link">{{ member.user.username }}</a></th>
+      <td>{{ member.ba_start_year }} - {{ member.ba_end_year }}</td>
+      <td>{{ member.ma_start_year }} - {{ member.ma_end_year }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock %}

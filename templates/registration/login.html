@@ -1,0 +1,21 @@
+{% extends "base_center.html" %}
+{% load i18n %}
+{% load bootstrap5 %}
+
+{% block title %}Log In{% endblock %}
+{% block contentcenter %}
+<h2>Log In</h2>
+
+
+<form method="post">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+    <input type="hidden" name="next" value="{{ next }}" />
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">Log In</button>
+  {% endbuttons %}
+</form>
+
+<p>{% trans "Forgot your password?" %} <a href="{% url 'password_reset' %}">{% trans "Reset it" %}</a>.</p>
+<p>{% trans "Not a member?" %} <a href="{% url 'django_registration_register' %}">{% trans "Register" %}</a>.</p>
+{% endblock %}

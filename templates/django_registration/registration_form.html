@@ -1,0 +1,21 @@
+{% extends "base_center.html" %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+{% block contentcenter %}
+      <h1 class="title">
+          Join the Network!
+      </h1>
+      <p class="subtitle">
+          Be part of it. Read the <i>terms and conditions</i>!
+      </p>
+      <form method="post">
+        {% csrf_token %}
+          {% bootstrap_form form %}
+
+      {% buttons %}
+          <button type="submit" class="btn btn-primary">Submit</button>
+      {% endbuttons %}
+      </form>
+{% endblock %}
