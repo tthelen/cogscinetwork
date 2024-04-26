@@ -12,13 +12,6 @@ class Profile(models.Model):
     nickname = models.CharField(max_length=200, blank=True)
     bio = models.TextField(null=True, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
-    ba_start_year = models.IntegerField(null=True, blank=True)  # year of first year of BA
-    ba_end_year = models.IntegerField(null=True, blank=True)  # year of last year of BA
-    ma_start_year = models.IntegerField(null=True, blank=True)  # year of first year of MA
-    ma_end_year = models.IntegerField(null=True, blank=True)  # year of last year of MA
-    phd_start_year = models.IntegerField(null=True, blank=True)  # year of first year of PhD
-    phd_end_year = models.IntegerField(null=True, blank=True)  # year of last year of PhD
-
 
 #    name = models.CharField(max_length=200)
 #    email = models.EmailField(max_length=200)
@@ -28,3 +21,15 @@ class Profile(models.Model):
 #
 #    def __str__(self):
 #        return self.name
+
+class Experience(models.Model):
+    profile = models.ForeignKey(Profile, related_name='experiences', on_delete=models.CASCADE)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    employer = models.CharField(max_length=100)
+    job_title = models.CharField(max_length=200)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return self.title

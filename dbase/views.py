@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from .models import Profile
-from .forms import ProfileForm, CogsciNetworkRegistrationForm
+from .forms import ProfileForm, CogsciNetworkRegistrationForm, ExperienceForm, ExperienceFormSet
+
 from django_registration.backends.activation.views import RegistrationView
 
 
@@ -78,6 +79,14 @@ class ProfileUpdateView(UpdateView):
     exclude = ('user', 'valid')
     success_url = reverse_lazy('home')
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['experiences'] = ExperienceFormSet(self.request.POST, instance=self.object)
+        else:
+            data['experiences'] = ExperienceFormSet(instance=self.object)
+        return data
+
     def form_valid(self, form):
         """If the form is valid, save the associated model.
 
@@ -86,6 +95,12 @@ class ProfileUpdateView(UpdateView):
         """
         form.instance.valid = True
         messages.add_message(self.request, messages.INFO, 'Profile updated')
+        context = self.get_context_data()
+        experiences = context['experiences']
+        self.object = form.save()
+        if experiences.is_valid():
+            experiences.instance = self.object
+            experiences.save()
         return super().form_valid(form)
 
 

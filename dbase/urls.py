@@ -12,7 +12,7 @@ urlpatterns = [
     path(r'profile/<int:pk>', views.ProfileDetailsView.as_view(), name='profile_show'),
     path(r'profile/<int:pk>/update', views.ProfileUpdateView.as_view(), name='profile_update'),
     path(r'profile/<int:pk>/delete', views.ProfileDeleteView.as_view(), name='profile_delete'),
-    path(r'join', views.ProfileCreateView.as_view(), name='join'),
+    path(r'join', views.ProfileUpdateView.as_view(), name='join'),
     path(r'', views.HomeView.as_view(), name='home'),
     # path(r'about/', views.about, name='about'),
 ]

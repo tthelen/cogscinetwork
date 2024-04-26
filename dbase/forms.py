@@ -1,7 +1,8 @@
-from .models import Profile
+from .models import Profile, Experience
 from django import forms
 from django_registration.forms import RegistrationForm
 from django.utils.translation import gettext_lazy as _
+from django.forms import inlineformset_factory
 
 
 class CogsciNetworkRegistrationForm(RegistrationForm):
@@ -18,14 +19,27 @@ class ProfileForm(forms.ModelForm):
             model = Profile
             exclude = ('valid', 'user', 'nickname')
 
-    def clean(self):
-        cd = self.cleaned_data
 
-        if not cd['ba_start_year'] \
-                and not cd['ba_end_year'] \
-                and not cd['ma_start_year'] \
-                and not cd['ma_end_year'] \
-                and not cd['phd_start_year'] \
-                and not cd['phd_end_year']:
-            raise forms.ValidationError('Please provide at least one date range')
-        return cd
+class ExperienceForm(forms.ModelForm):
+
+    class Meta:
+        model = Experience
+        fields = ['city', 'country', 'employer', 'job_title', 'start_date', 'end_date']
+        widgets = {
+            'city': forms.TextInput(),
+            'country': forms.TextInput(),
+            'employer': forms.TextInput(),
+            'job_title': forms.TextInput(attrs={'style': 'width: 200px;'}),
+            'start_date': forms.TextInput(attrs={'style': 'width: 4em;'}),
+            'end_date': forms.TextInput(attrs={'style': 'width: 4em;'}),
+            # Define other fields similarly
+        }
+
+
+ExperienceFormSet = inlineformset_factory(
+    Profile,
+    Experience,
+    form=ExperienceForm,
+    extra=1,  # Number of empty forms to display
+    can_delete=True  # Allows deletion of experiences
+)

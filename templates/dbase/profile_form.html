@@ -1,14 +1,36 @@
-{% extends "base_center.html" %}
+{% extends "base12.html" %}
 {% load bootstrap5 %}
 {% block title %}Home{% endblock %}
-{% block contentcenter %}
+{% block content12 %}
       <h1 class="title">
           Profile for {{ user.username }}
       </h1>
 
       <form method="POST">
-            {% csrf_token %}
-          {% bootstrap_form form %}
+           {% csrf_token %}
+           {% bootstrap_form form %}
+               {{ experiences.management_form }}
+               {% for form in experiences.forms %}
+                  <div class="form-row">
+                    {% bootstrap_form form layout='inline' %}
+                  </div>
+               {% endfor %}
+
+        <div class="form-group">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="toggleCognitiveScience">
+                <label class="custom-control-label" for="toggleCognitiveScience" id="labelCognitiveScience">Bachelor Cognitive Science</label>
+            </div>
+        </div>
+        <div class="form-row" id="dateInputs" style="display: none;">
+            <div class="col">
+                <input type="date" class="form-control" placeholder="Start Date" id="startDate">
+            </div>
+            <div class="col">
+                <input type="date" class="form-control" placeholder="End Date" id="endDate">
+            </div>
+        </div>
+
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
                     Submit
@@ -16,3 +38,20 @@
             {% endbuttons %}
       </form>
 {% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#toggleCognitiveScience').change(function() {
+            if (this.checked) {
+                $('#labelCognitiveScience').text('Bachelor Cognitive Science Osnabrück');
+                $('#dateInputs').show();
+            } else {
+                $('#labelCognitiveScience').text('Bachelor Cognitive Science');
+                $('#dateInputs').hide();
+            }
+        });
+    });
+</script>
+{% endblock %}
+
