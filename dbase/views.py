@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from .models import Profile
-from .forms import ProfileForm, CogsciNetworkRegistrationForm, ExperienceForm, ExperienceFormSet
+from .forms import ProfileForm, CogsciNetworkRegistrationForm, ExperienceForm, ExperienceFormSet, AcademicForm, AcademicFormSet
 
 from django_registration.backends.activation.views import RegistrationView
 
@@ -83,8 +83,10 @@ class ProfileUpdateView(UpdateView):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
             data['experiences'] = ExperienceFormSet(self.request.POST, instance=self.object)
+            data['academics'] = AcademicFormSet(self.request.POST, instance=self.object)
         else:
-            data['experiences'] = ExperienceFormSet(instance=self.object)
+            data['experiences'] = ExperienceFormSet(instance=self.object, initial=[{'start_year': 2024, 'end_year': 2024}])
+            data['academics'] = AcademicFormSet(instance=self.object, initial=[{'phase': 'Bachelor'}])
         return data
 
     def form_valid(self, form):
@@ -96,7 +98,7 @@ class ProfileUpdateView(UpdateView):
         form.instance.valid = True
         messages.add_message(self.request, messages.INFO, 'Profile updated')
         context = self.get_context_data()
-        experiences = context['experiences']
+        experiences = context['experiences'] # TODO: save experiences
         self.object = form.save()
         if experiences.is_valid():
             experiences.instance = self.object

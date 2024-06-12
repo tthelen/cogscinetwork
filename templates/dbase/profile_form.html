@@ -1,5 +1,6 @@
 {% extends "base12.html" %}
 {% load bootstrap5 %}
+{% load static %}
 {% block title %}Home{% endblock %}
 {% block content12 %}
       <h1 class="title">
@@ -9,48 +10,84 @@
       <form method="POST">
            {% csrf_token %}
            {% bootstrap_form form %}
-               {{ experiences.management_form }}
-               {% for form in experiences.forms %}
-                  <div class="form-row">
-                    {% bootstrap_form form layout='inline' %}
-                  </div>
+
+      <h2 class="title">Academics</h2>
+          <table class="table">
+               {{ academic.management_form }}
+               {% for form in academics.forms %}
+                   {% if forloop.first %}
+                       <thead>
+                            <tr>
+                                {% for field in form.visible_fields %}
+                                    <th>{{ field.label|capfirst }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                   {% endif %}
+                   <tr class="{% cycle 'row1' 'row2' %} academics_formset_row">
+                        {% for field in form.visible_fields %}
+                            <td>
+                                {# Include the hidden fields in the form #}
+                                {% if forloop.first %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                {% endif %}
+                                {{ field.errors.as_ul }}
+                                {{ field }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                   {% endfor %}
+          </table>
+
+      <h2 class="title">Work Experience</h2>
+      <table class="table">
+           {{ experiences.management_form }}
+           {% for form in experiences.forms %}
+               {% if forloop.first %}
+                   <thead>
+                        <tr>
+                            {% for field in form.visible_fields %}
+                                <th>{{ field.label|capfirst }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+               {% endif %}
+               <tr class="{% cycle 'row1' 'row2' %} experiences_formset_row">
+                    {% for field in form.visible_fields %}
+                        <td>
+                            {# Include the hidden fields in the form #}
+                            {% if forloop.first %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endif %}
+                            {{ field.errors.as_ul }}
+                            {{ field }}
+                        </td>
+                    {% endfor %}
+                </tr>
                {% endfor %}
-
-        <div class="form-group">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="toggleCognitiveScience">
-                <label class="custom-control-label" for="toggleCognitiveScience" id="labelCognitiveScience">Bachelor Cognitive Science</label>
-            </div>
-        </div>
-        <div class="form-row" id="dateInputs" style="display: none;">
-            <div class="col">
-                <input type="date" class="form-control" placeholder="Start Date" id="startDate">
-            </div>
-            <div class="col">
-                <input type="date" class="form-control" placeholder="End Date" id="endDate">
-            </div>
-        </div>
-
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">
-                    Submit
-                </button>
-            {% endbuttons %}
+      </table>
+        <input type="submit" value="Save"/>
+         <a href="{% url 'memberlist' %}">back to the list</a>
       </form>
 {% endblock %}
 
 {% block scripts %}
-<script>
-    $(document).ready(function() {
-        $('#toggleCognitiveScience').change(function() {
-            if (this.checked) {
-                $('#labelCognitiveScience').text('Bachelor Cognitive Science Osnabrück');
-                $('#dateInputs').show();
-            } else {
-                $('#labelCognitiveScience').text('Bachelor Cognitive Science');
-                $('#dateInputs').hide();
-            }
-        });
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.experiences_formset_row').formset({
+        addText: 'add experience',
+        deleteText: 'remove',
+        prefix: 'experience_set'
+    });
+    $('.academics_formset_row').formset({
+        addText: 'add academic',
+        deleteText: 'remove',
+        prefix: 'academic_set'
     });
 </script>
 {% endblock %}
