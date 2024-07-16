@@ -9,11 +9,29 @@
 
       <form method="POST">
            {% csrf_token %}
+
+      {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {% for field in form %}
+            {% if field.errors %}
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span>{{ field.label }}: {{ field.errors|striptags }}</span><br>
+            {% endif %}
+        {% endfor %}
+        {% for error in form.non_field_errors  %}
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span>Error: {{ error|striptags }}</span>
+        {% endfor %}
+    </div>
+{% endif %}
+
            {% bootstrap_form form %}
 
-      <h2 class="title">Academics</h2>
+            
+      <h2 class="title">Academic Carreer</h2>
           <table class="table">
-               {{ academic.management_form }}
+               {{ academics.management_form }}
                {% for form in academics.forms %}
                    {% if forloop.first %}
                        <thead>
@@ -40,6 +58,7 @@
                     </tr>
                    {% endfor %}
           </table>
+
 
       <h2 class="title">Work Experience</h2>
       <table class="table">
@@ -70,6 +89,7 @@
                 </tr>
                {% endfor %}
       </table>
+      
         <input type="submit" value="Save"/>
          <a href="{% url 'memberlist' %}">back to the list</a>
       </form>

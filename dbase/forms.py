@@ -24,7 +24,7 @@ def current_year():
     return datetime.date.today().year
 
 def year_choices():
-    return [(r,r) for r in range(1960, datetime.date.today().year+10)]
+    return [(r,r) for r in range(datetime.date.today().year, 1960, -1)]
 
 class ExperienceForm(forms.ModelForm):
 
@@ -32,6 +32,14 @@ class ExperienceForm(forms.ModelForm):
         super(ExperienceForm, self).__init__(*args, **kwargs)
         self.fields['start_date'].choices = year_choices()
         self.fields['end_date'].choices = year_choices()
+
+    # check if form is valid
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        if start_date > end_date:
+            raise forms.ValidationError("End date must be after start date.")
 
     class Meta:
         model = Experience
@@ -62,11 +70,19 @@ class AcademicForm(forms.ModelForm):
         self.fields['start_date'].choices = year_choices()
         self.fields['end_date'].choices = year_choices()
 
+    # check if form is valid
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        if start_date > end_date:
+            raise forms.ValidationError("End date must be after start date.")
+
     class Meta:
         model = Academic
-        fields = ['start_date', 'end_date', 'phase', 'university', 'city', 'country',  ]
+        fields = ['start_date', 'end_date', 'phase', 'subject', 'university', 'country',  ]
         widgets = {
-            'city': forms.TextInput(),
+            'subject': forms.TextInput(),
             'country': forms.TextInput(),
             'university': forms.TextInput(),
             'phase': forms.Select(choices=[('Bachelor', 'Bachelor'), ('Master', 'Master'), ('Ph.D.', 'Ph.D.'), ('Postdoc', 'Postdoc'), ('Faculty', 'Faculty'), ('Other', 'Other')], attrs={'class': 'form-control', 'style': 'width: 8em;'}),
