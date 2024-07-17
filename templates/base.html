@@ -37,7 +37,7 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'memberlist' %}">Member list</a></li>
                             {% if user.is_authenticated %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'settings' %}">Settings</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'profile_update' user.pk %}">Profile</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'profile_update' user.profile.pk %}">Profile</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                             {% else %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'django_registration_register' %}">Join</a></li>

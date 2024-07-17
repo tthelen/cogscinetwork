@@ -6,6 +6,7 @@ from django.forms import inlineformset_factory
 import datetime
 
 class CogsciNetworkRegistrationForm(RegistrationForm):
+    """The form for the first user registration."""
 
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
@@ -15,8 +16,10 @@ class CogsciNetworkRegistrationForm(RegistrationForm):
 
 
 class ProfileForm(forms.ModelForm):
+    """Main form for the user profile"""
     class Meta:
             model = Profile
+            # some fields are not editable
             exclude = ('valid', 'user', 'nickname')
 
 

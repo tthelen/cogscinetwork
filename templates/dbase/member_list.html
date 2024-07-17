@@ -18,7 +18,7 @@
 
     {% for member in members %}
     <tr style="transform: rotate(0);">
-        <th scope="row"><a href="{% url 'profile_show' member.user.pk %}" class="stretched-link">{{ member.user.username }}</a></th>
+        <th scope="row"><a href="{% url 'profile_show' member.user.profile.pk %}" class="stretched-link">{{ member.firstname }} {{  member.lastname }}</a></th>
       <td>{{ member.ba_start_year }} - {{ member.ba_end_year }}</td>
       <td>{{ member.ma_start_year }} - {{ member.ma_end_year }}</td>
     </tr>

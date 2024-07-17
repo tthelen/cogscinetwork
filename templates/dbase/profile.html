@@ -10,15 +10,13 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body text-center">
-                        <img src="https://via.placeholder.com/150" class="rounded-circle img-fluid" alt="Profile Picture">
+                        <img src="{{ profile.profile_pic.url }}" class="rounded-circle img-fluid" alt="Profile Picture">
                         <h3 class="mt-3">{{ profile.firstname }} {{ profile.lastname }}</h3>
                         <p class="text-muted">{{ profile.pronouns }}</p>
-                        <button class="btn btn-primary">Contact!</button>
+                        <p class="text-muted">{{ profile.slogan }}</p>
+                        <button class="btn btn-primary">Get in touch!</button>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">About</h5>
-                        <p class="card-text">{{ profile.bio }}</p>
-                    </div>
+
                     <div class="card-body">
                         <h5 class="card-title">Contact Information</h5>
                         <ul class="list-group list-group-flush">
@@ -32,6 +30,12 @@
 
             <!-- Profile Content -->
             <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">About</h5>
+                        <p class="card-text">{{ profile.bio | linebreaks }}</p>
+                    </div>
+                </div>
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Academic Career</h5>

@@ -20,7 +20,7 @@ class HomeView(View):
                 # add django message: please update your profile
                 messages.add_message(request, messages.INFO, 'Please update your profile')
                 # redirect to profile update page
-                return redirect('profile_update', pk=request.user.pk)
+                return redirect('profile_update', pk=request.user.profile.pk)
             return render(request, "dbase/dashboard.html", {'user': request.user})
         else:
             return render(request, "dbase/home.html", {})
@@ -51,7 +51,6 @@ class CogsciNetworkRegistrationView(RegistrationView):
         self.send_activation_email(new_user)
 
         return new_user
-
 
 
 class ProfileDetailsView(TemplateView):
@@ -136,7 +135,6 @@ class ProfileUpdateView(UpdateView):
 
         messages.add_message(self.request, messages.INFO, 'Profile updated')
         return super().form_valid(form)
-
 
 
 class ProfileDeleteView(DeleteView):

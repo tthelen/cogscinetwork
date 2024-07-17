@@ -17,6 +17,7 @@ class Profile(models.Model):
     place = models.CharField(max_length=200, blank=True)
     bio = models.TextField(null=True, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
+    slogan = models.CharField(max_length=256, blank=True)
 
     def check_validity(self):
         """
