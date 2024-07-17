@@ -31,7 +31,9 @@ def current_year():
     return datetime.date.today().year
 
 def year_choices():
-    return [(r,r) for r in range(datetime.date.today().year, 1960, -1)]
+    l = [(r,r) for r in range(datetime.date.today().year, 1960, -1)]
+    l.insert(0, ('', 'ongoing'))
+    return l
 
 class ExperienceForm(forms.ModelForm):
 
@@ -45,7 +47,7 @@ class ExperienceForm(forms.ModelForm):
         cleaned_data = super().clean()
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
-        if start_date > end_date:
+        if end_date and start_date > end_date:
             raise forms.ValidationError("End date must be after start date.")
 
     class Meta:
@@ -82,7 +84,7 @@ class AcademicForm(forms.ModelForm):
         cleaned_data = super().clean()
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
-        if start_date > end_date:
+        if end_date and start_date > end_date:
             raise forms.ValidationError("End date must be after start date.")
 
     class Meta:

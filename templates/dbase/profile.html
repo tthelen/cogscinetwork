@@ -52,7 +52,11 @@
                             <div class="list-group-item">
                                 <h6 class="mb-1">{{ acad.phase }} {{ acad.subject }}</h6>
                                 <p class="mb-1">{{ acad.university }}, {{ acad.country }}</p>
-                                <small>{{ acad.start_date }} &mdash; {{ acad.end_date }}</small>
+                                <small>
+                                    {% if not acad.end_date %}since {% endif %}
+                                    {{ acad.start_date }}
+                                    {% if acad.end_date %} &mdash; {{ acad.end_date }}{% endif %}
+                                </small>
                             </div>
                             {% endfor %}
                         </div>
@@ -67,7 +71,11 @@
                             <div class="list-group-item">
                                 <h6 class="mb-1">{{ experience.job_title }} at {{ experience.employer }}</h6>
                                 <p class="mb-1">{{ experience.city }}, {{ experience.country }}</p>
-                                <small>{{ experience.start_date }} &mdash; {{ experience.end_date }}</small>
+                                <small>
+                                    {% if not experience.end_date %}since {% endif %}
+                                    {{ experience.start_date }}
+                                    {% if experience.end_date %} &mdash; {{ experience.end_date }}{% endif %}
+                                </small>
                             </div>
                             {% endfor %}
                             <!-- Add more posts here -->

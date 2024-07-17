@@ -78,7 +78,7 @@ class Experience(models.Model):
     employer = models.CharField(max_length=100)
     job_title = models.CharField(max_length=200)
     start_date = models.IntegerField('Start Year', validators=[MinValueValidator(1960), max_value_current_year], )
-    end_date = models.IntegerField('End Year', validators=[MinValueValidator(1960), max_value_current_year])
+    end_date = models.IntegerField('End Year', validators=[MinValueValidator(1960), max_value_current_year], blank=True, null=True)
 
     def __str__(self):
         return f"{self.job_title} at {self.employer} ({self.start_date}-{self.end_date})"
@@ -90,7 +90,7 @@ class Academic(models.Model):
     university = models.CharField(max_length=100)
     phase = models.CharField(max_length=50)
     start_date = models.IntegerField('Start Year', validators=[MinValueValidator(1960), max_value_current_year], )
-    end_date = models.IntegerField('End Year', validators=[MinValueValidator(1960), max_value_current_year])
+    end_date = models.IntegerField('End Year', validators=[MinValueValidator(1960), max_value_current_year], blank=True, null=True)
 
     def __str__(self):
         return f"{self.phase} {self.subject}, {self.university} ({self.start_date}-{self.end_date})"
