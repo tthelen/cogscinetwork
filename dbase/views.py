@@ -40,7 +40,7 @@ class HomeView(View):
 
 
 
-class SettingsView(TemplateView, LoginRequiredMixin):
+class SettingsView(LoginRequiredMixin, TemplateView):
 
     template_name = 'dbase/settings.html'
 
@@ -67,7 +67,7 @@ class CogsciNetworkRegistrationView(RegistrationView):
         return new_user
 
 
-class ProfileDetailsView(TemplateView, LoginRequiredMixin):
+class ProfileDetailsView(LoginRequiredMixin, TemplateView):
 
     template_name = 'dbase/profile.html'
 
@@ -77,14 +77,14 @@ class ProfileDetailsView(TemplateView, LoginRequiredMixin):
         return context
 
 
-class ProfileCreateView(CreateView, LoginRequiredMixin):
+class ProfileCreateView(LoginRequiredMixin, CreateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'dbase/profile_form.html'
     # fields = ["name"]
 
 
-class ProfileUpdateView(UpdateView, LoginRequiredMixin):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
     template_name = 'dbase/profile_form.html'
@@ -129,14 +129,14 @@ class ProfileUpdateView(UpdateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ProfileDeleteView(DeleteView, LoginRequiredMixin):
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = Profile
     form_class = ProfileForm
     template_name = 'dbase/profile_confirm_delete.html'
     success_url = reverse_lazy("author-list")
 
 
-class MemberList(ListView, LoginRequiredMixin):
+class MemberList(LoginRequiredMixin, ListView):
 
     model = Profile
     template_name = 'dbase/member_list.html'
