@@ -13,6 +13,7 @@ urlpatterns = [
     path(r'profile/<int:pk>/update', views.ProfileUpdateView.as_view(), name='profile_update'),
     path(r'profile/<int:pk>/delete', views.ProfileDeleteView.as_view(), name='profile_delete'),
     path(r'join', views.ProfileUpdateView.as_view(), name='join'),
+    path(r'send_message', views.SendMessageView.as_view(), name='send_message'),
     path(r'', views.HomeView.as_view(), name='home'),
     # path(r'about/', views.about, name='about'),
 ]

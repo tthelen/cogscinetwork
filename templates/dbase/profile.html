@@ -16,10 +16,10 @@
                 <div class="card">
                     <div class="card-body text-center">
                         <img src="{{ profile.profile_pic.url }}" class="rounded-circle img-fluid" alt="Profile Picture">
-                        <h3 class="mt-3">{{ profile.firstname }} {{ profile.lastname }}</h3>
+                        <h3 class="mt-3">{{ profile.title }} {{ profile.firstname }} {{ profile.lastname }}</h3>
                         <p class="text-muted">{{ profile.pronouns }}</p>
                         <p class="text-muted">{{ profile.slogan }}</p>
-                        <button class="btn btn-primary">Get in touch!</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#messageModal">Get in touch!</button>
                     </div>
 
                     <div class="card-body">
@@ -76,8 +76,97 @@
                 </div>
             </div>
         </div>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">Send a Message</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="py-2">The message will be sent via e-mail to {{ profile.first_name }} {{ profile.last_name }}.
+                        Your full name and e-mail address will be visible to the recipient. If they reply to your message, the answer
+                        will be sent to your e-mail address.</p>
+
+                        <form id="messageForm">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="subjectText" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subjectText" name="subject">
+
+                                <label for="messageText" class="form-label">Message</label>
+                                <textarea class="form-control" id="messageText" rows="5" name="message"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="sendMessageButton">Send Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+        <script>
+        $(document).ready(function() {
+            $('#sendMessageButton').click(function() {
+                var message = $('#messageText').val();
+                var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+                if (!message || message.length === 0) {
+                    alert('Please enter a message.');
+                    return;
+                }
+
+                var subj = $('#subjectText').val();
+                if (!subj || subj.length === 0) {
+                    alert('Please enter a subject.');
+                    return;
+                }
+
+                $.ajax({
+                    url: "{% url 'send_message' %}",
+                    type: "POST",
+                    data: {
+                        message: message,
+                        subject: subj,
+                        recipient: {{ profile.pk }},
+                        csrfmiddlewaretoken: csrfToken
+                    },
+                    success: function(response) {
+                        // Handle success
+                        if (response.success) {
+                            // Add Django message (this is a simplistic example)
+                            alert('Message sent successfully!');
+                        } else {
+                            alert('Failed to send message.');
+                        }
+
+                    },
+                    error: function(xhr, errmsg, err) {
+                        // Handle error
+                        alert('Error sending message: ' + errmsg);
+                    }
+                });
+
+                // Close the modal
+                $('#messageModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                            
+                
+            });
+        });
+    </script>
 
 {% endblock %}
 

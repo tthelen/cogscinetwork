@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, View
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
+# import json_response from utils
+from django.http import JsonResponse
 
 from django.contrib.auth.models import User
 from .models import Profile, Academic
@@ -36,7 +39,8 @@ class HomeView(View):
             return render(request, "dbase/home.html", {'member_count': member_count})
 
 
-class SettingsView(TemplateView):
+
+class SettingsView(TemplateView, LoginRequiredMixin):
 
     template_name = 'dbase/settings.html'
 
@@ -63,7 +67,7 @@ class CogsciNetworkRegistrationView(RegistrationView):
         return new_user
 
 
-class ProfileDetailsView(TemplateView):
+class ProfileDetailsView(TemplateView, LoginRequiredMixin):
 
     template_name = 'dbase/profile.html'
 
@@ -73,14 +77,14 @@ class ProfileDetailsView(TemplateView):
         return context
 
 
-class ProfileCreateView(CreateView):
+class ProfileCreateView(CreateView, LoginRequiredMixin):
     model = Profile
     form_class = ProfileForm
     template_name = 'dbase/profile_form.html'
     # fields = ["name"]
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(UpdateView, LoginRequiredMixin):
     model = Profile
     form_class = ProfileForm
     template_name = 'dbase/profile_form.html'
@@ -90,25 +94,12 @@ class ProfileUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        experiences_initial = [{'start_year': 2024, 'end_year': 2024}]
-        if not Academic.objects.filter(profile=self.object,
-                                       phase='Bachelor').exists():  # no bachelor yet: Use CogSci as default
-            academics_initial = [
-                {'phase': 'Bachelor', 'subject': 'Cognitive Science', 'university': 'Universität Osnabrück',
-                 'country': 'Germany', 'start_year': 2021, 'end_year': 2024}]
-        elif not Academic.objects.filter(profile=self.object,
-                                         phase='Master').exists():  # no master yet: Use CogSci as default
-            academics_initial = [
-                {'phase': 'Master', 'subject': 'Cognitive Science', 'university': 'Universität Osnabrück',
-                 'country': 'Germany', 'start_year': 2021, 'end_year': 2024}]
-        else:
-            academics_initial = [{'start_year': 2024, 'end_year': 2024}]
         if self.request.POST:
-            data['experiences'] = ExperienceFormSet(self.request.POST, initial=experiences_initial, instance=self.object)
-            data['academics'] = AcademicFormSet(self.request.POST, initial=academics_initial, instance=self.object)
+            data['experiences'] = ExperienceFormSet(self.request.POST, instance=self.object)
+            data['academics'] = AcademicFormSet(self.request.POST, instance=self.object)
         else:
-            data['experiences'] = ExperienceFormSet(instance=self.object, initial=experiences_initial)
-            data['academics'] = AcademicFormSet(instance=self.object, initial=academics_initial)
+            data['experiences'] = ExperienceFormSet(instance=self.object)
+            data['academics'] = AcademicFormSet(instance=self.object)
         return data
 
     def form_valid(self, form):
@@ -124,40 +115,61 @@ class ProfileUpdateView(UpdateView):
         self.object = form.save()
         self.object.check_validity()
         if experiences.is_valid():
-            #for e in experiences:
-            #    print("xx:", e.cleaned_data)
             experiences.instance = self.object
             experiences.save()
         else:
-            # print(experiences.errors)
             pass
         if academics.is_valid():
-            #for a in academics:
-            #    print("yy:", a.cleaned_data)
             academics.instance = self.object
             academics.save()
         else:
             pass
-            # print("YY errors")
-            # for a in academics:
-            #    print(a.errors)
-            # print(academics.errors)
 
         messages.add_message(self.request, messages.INFO, 'Profile updated')
         return super().form_valid(form)
 
 
-class ProfileDeleteView(DeleteView):
+class ProfileDeleteView(DeleteView, LoginRequiredMixin):
     model = Profile
     form_class = ProfileForm
     template_name = 'dbase/profile_confirm_delete.html'
     success_url = reverse_lazy("author-list")
 
 
-class MemberList(ListView):
+class MemberList(ListView, LoginRequiredMixin):
 
     model = Profile
     template_name = 'dbase/member_list.html'
     context_object_name = 'members'
     queryset = Profile.objects.filter(valid=True)
     paginate_by = 10
+
+class SendMessageView(View):
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'You must be logged in to send a message.'}, status=403)
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        recipient = request.POST.get('recipient')
+        if not subject or not message or not recipient:
+            return JsonResponse({'error': 'Subject and message are required.'}, status=400)
+        # TODO: check if recipient allows messages!
+        recipient = get_object_or_404(User, profile__pk=recipient)
+        email = recipient.email
+        # send email
+        from django.core.mail import EmailMessage
+        email_msg = EmailMessage(
+            subject="[CogSci Network Message] "+subject,
+            body=message+" \n\nThis message was sent by {} {} via the CogSci Network.".format(request.user.profile.firstname, request.user.profile.lastname),
+            # from_email='cogsci-network@uni-osnabrueck.de',  # use default from email (configured in settings)
+            to=[recipient.email],
+            cc=[request.user.email],
+            reply_to=[request.user.email]
+        )
+        print("Sending email to "+recipient.email)
+        success = email_msg.send(fail_silently=False)
+        if success:
+            return JsonResponse({'success': 'Message sent to '+recipient.username}, status=200)
+        else:
+            return JsonResponse({'error': 'Could not send message.'}, status=500)
