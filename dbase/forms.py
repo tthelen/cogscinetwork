@@ -21,6 +21,10 @@ class ProfileForm(forms.ModelForm):
             model = Profile
             # some fields are not editable
             exclude = ('valid', 'user', 'nickname')
+            widgets = {
+                'pronouns': forms.TextInput(attrs={'list': 'pronouns-list'}),
+        }
+
 
 
 def current_year():
@@ -87,8 +91,9 @@ class AcademicForm(forms.ModelForm):
         widgets = {
             'subject': forms.TextInput(),
             'country': forms.TextInput(),
-            'university': forms.TextInput(),
-            'phase': forms.Select(choices=[('Bachelor', 'Bachelor'), ('Master', 'Master'), ('Ph.D.', 'Ph.D.'), ('Postdoc', 'Postdoc'), ('Faculty', 'Faculty'), ('Other', 'Other')], attrs={'class': 'form-control', 'style': 'width: 8em;'}),
+            'university': forms.TextInput(attrs={'list': 'uni-list'}),
+            'phase': forms.TextInput(attrs={'list': 'phase-list'}),
+            # 'phase': forms.Select(choices=[('Bachelor', 'Bachelor'), ('Master', 'Master'), ('Ph.D.', 'Ph.D.'), ('Postdoc', 'Postdoc'), ('Faculty', 'Faculty'), ('Other', 'Other')], attrs={'class': 'form-control', 'style': 'width: 8em;'}),
             'start_date': forms.Select(choices=year_choices(), attrs={'class': 'form-control', 'style': 'width: 4em;'}),
             'end_date': forms.Select(choices=year_choices(), attrs={'class': 'form-control', 'style': 'width: 4em;'}),
             #    # Define other fields similarly

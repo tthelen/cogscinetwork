@@ -29,6 +29,7 @@
 
       {% bootstrap_form form %}
 
+
       <h2 class="title">Academic Carreer</h2>
           <table class="table">
                {{ academics.management_form }}
@@ -89,6 +90,27 @@
                 </tr>
                {% endfor %}
       </table>
+
+      <datalist id="pronouns-list">
+                <option value="he/him">
+                <option value="she/her">
+                <option value="they/them">
+                <option value="other">
+      </datalist>
+
+      <datalist id="uni-list">
+          <option value="Universität Osnabrück">
+      </datalist>
+
+      <datalist id="phase-list">
+          <option value="Bachelor">
+          <option value="Master">
+          <option value="PhD">
+          <option value="Postdoc">
+          <option value="Professor">
+          <option value="Diplom">
+          <option value="Magister">
+      </option>
       
         <input type="submit" value="Save"/>
          <a href="{% url 'memberlist' %}">back to the list</a>
