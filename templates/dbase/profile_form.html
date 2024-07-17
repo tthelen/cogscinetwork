@@ -91,6 +91,10 @@
                {% endfor %}
       </table>
 
+        <button class="btn btn-primary"  type="submit" value="Save"/>Save</button> &nbsp; &nbsp;
+         <a class="btn btn-outline-primary" href="{% url 'memberlist' %}">Cancel</a>
+
+
       <datalist id="pronouns-list">
                 <option value="he/him">
                 <option value="she/her">
@@ -110,10 +114,9 @@
           <option value="Professor">
           <option value="Diplom">
           <option value="Magister">
-      </option>
-      
-        <input type="submit" value="Save"/>
-         <a href="{% url 'memberlist' %}">back to the list</a>
+      </datalist>
+
+
       </form>
 {% endblock %}
 
