@@ -26,6 +26,10 @@ class Profile(models.Model):
     place = models.CharField(max_length=200, blank=True)
     slogan = models.CharField(max_length=256, blank=True)
     bio = models.TextField(null=True, blank=True)
+    homepage = models.URLField(max_length=200, blank=True)
+    linkedin = models.URLField(max_length=200, blank=True)
+    instagram = models.URLField(max_length=200, blank=True)
+    phone = models.CharField(max_length=200, blank=True)
     profile_pic = models.ImageField(upload_to=profile_pic_filename, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png'])], blank=True)
 
     def check_validity(self):

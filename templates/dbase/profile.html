@@ -26,9 +26,10 @@
                         <h5 class="card-title">Contact Information</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><strong>Email:</strong> {{ profile.user.email }}</li>
-                            <li class="list-group-item"><strong>Instagram:</strong> </li>
-                            <li class="list-group-item"><strong>LinkedIn:</strong> </li>
-                            <li class="list-group-item"><strong>Phone:</strong> </li>
+                            <li class="list-group-item"><strong>WWW:</strong> <a href="{{ profile.homepage }}" target="_blank">{{ profile.homepage }}</a> </li>
+                            <li class="list-group-item"><strong>Instagram:</strong> <a href="{{ profile.instagram }}" target="_blank">{{ profile.instagram }}</a></li>
+                            <li class="list-group-item"><strong>LinkedIn:</strong> <a href="{{ profile.linkedin }}" target="_blank">{{ profile.linkedin }}</a></li>
+                            <li class="list-group-item"><strong>Phone:</strong> {{ profile.phone }}</li>
                             <li class="list-group-item"><strong>Location:</strong> {{ profile.place }}</li>
                         </ul>
                     </div>
