@@ -1,6 +1,14 @@
 from django.db import models
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import FileExtensionValidator
+
+# import uuid4
+from uuid import uuid4
+
+def profile_pic_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    return 'profile_pics/{}.{}'.format(uuid4().hex, ext)
 
 
 # Create your models here.
@@ -18,7 +26,7 @@ class Profile(models.Model):
     place = models.CharField(max_length=200, blank=True)
     slogan = models.CharField(max_length=256, blank=True)
     bio = models.TextField(null=True, blank=True)
-    profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
+    profile_pic = models.ImageField(upload_to=profile_pic_filename, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png'])], blank=True)
 
     def check_validity(self):
         """
