@@ -18,7 +18,7 @@ class HomeView(View):
         if request.user.is_authenticated:
             if not request.user.profile.valid:
                 # add django message: please update your profile
-                messages.add_message(request, messages.INFO, 'Please update your profile. Fill all required fields and add your Cognitive Science at Universität Osnabrück related experiences.
+                messages.add_message(request, messages.INFO, 'Please update your profile. Fill all required fields and add your Cognitive Science at Universität Osnabrück related experiences.')
                 # redirect to profile update page
                 return redirect('profile_update', pk=request.user.profile.pk)
             return render(request, "dbase/dashboard.html", {'user': request.user})
