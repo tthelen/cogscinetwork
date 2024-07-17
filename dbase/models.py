@@ -9,15 +9,16 @@ class Profile(models.Model):
     # link to django user
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
     valid = models.BooleanField(default=False)  # is the profile valid and can be shown to others?
+    last_activity = models.DateTimeField(auto_now=True)
     firstname = models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     nickname = models.CharField(max_length=200, blank=True)
     pronouns = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=200, blank=True)
     place = models.CharField(max_length=200, blank=True)
+    slogan = models.CharField(max_length=256, blank=True)
     bio = models.TextField(null=True, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
-    slogan = models.CharField(max_length=256, blank=True)
 
     def check_validity(self):
         """
@@ -35,17 +36,21 @@ class Profile(models.Model):
             self.save()
         return self.valid
 
+    def get_memberlist_string(self):
+        """
+        Returns a string for the memberlist, e.g. "Tobias Thelen (Cognitive Science)"
+        :return: string
+        """
+        for acad in self.academics.order_by('-start_date'):
+            if acad.university == 'Universität Osnabrück':
+                return acad.__str__()
+        for exp in self.experiences.order_by('-start_date'):
+            if exp.city == 'Osnabrück':
+                return exp.__str__()
+        return "ERROR: No academic or experience entry with Osnabrück found."
+
     def __str__(self):
         return self.user.username
-
-#    name = models.CharField(max_length=200)
-#    email = models.EmailField(max_length=200)
-#    password = models.CharField(max_length=200)
-#    bio = models.TextField()
-#    #profile_pic = models.ImageField(upload_to='profile_pics', blank=True)#
-#
-#    def __str__(self):
-#        return self.name
 
 
 def current_year():
@@ -71,9 +76,9 @@ class Academic(models.Model):
     subject = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     university = models.CharField(max_length=100)
-    phase = models.CharField(max_length=50, choices=[('Bachelor', 'Bachelor'), ('Master', 'Master'), ('Ph.D.', 'Ph.D.'), ('Postdoc', 'Postdoc'), ('Faculty', 'Faculty'), ('Other', 'Other')])
+    phase = models.CharField(max_length=50)
     start_date = models.IntegerField('Start Year', validators=[MinValueValidator(1960), max_value_current_year], )
     end_date = models.IntegerField('End Year', validators=[MinValueValidator(1960), max_value_current_year])
 
     def __str__(self):
-        return f"{self.phase} in {self.subject} at {self.university} ({self.start_date}-{self.end_date})"
+        return f"{self.phase} {self.subject}, {self.university} ({self.start_date}-{self.end_date})"

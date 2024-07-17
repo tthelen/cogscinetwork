@@ -7,5 +7,19 @@
     <h2>Recent changes</h2>
     <p>Here are the most recent changes to your network</p>
     <h2>Network statistics</h2>
-    <p>Here are some statistics about your network</p>
+    <p>Here are some statistics about the network</p>
+    <div class="col-sm-6">
+        <table class="table">
+            <tr>
+                <td>Active members</td>
+                <td>{{ member_count }}</td>
+            </tr>
+            <tr>
+                <td>Active members in the last 24 hours</td>
+                <td>{{ users_active_last_24h }}</td>
+            </tr>
+        </table>
+
+    </div>
+
 {% endblock %}

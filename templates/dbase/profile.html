@@ -6,6 +6,11 @@
 
 <div class="container mt-5">
         <div class="row">
+        {% if request.user.id == profile.user.id %}
+            <div class="col-md-12 text-end py-3">
+                <a href="{% url 'profile_update' profile.pk %}" class="btn btn-secondary">Edit Profile</a>
+            </div>
+        {% endif %}
             <!-- Profile Sidebar -->
             <div class="col-md-4">
                 <div class="card">
@@ -20,11 +25,11 @@
                     <div class="card-body">
                         <h5 class="card-title">Contact Information</h5>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Email:</strong> johndoe@example.com</li>
-                            <li class="list-group-item"><strong>Instagram:</strong> johndoe@example.com</li>
-                            <li class="list-group-item"><strong>LinkedIn:</strong> johndoe@example.com</li>
-                            <li class="list-group-item"><strong>Phone:</strong> +1234567890</li>
-                            <li class="list-group-item"><strong>Location:</strong> New York, USA</li>
+                            <li class="list-group-item"><strong>Email:</strong> {{ profile.user.email }}</li>
+                            <li class="list-group-item"><strong>Instagram:</strong> </li>
+                            <li class="list-group-item"><strong>LinkedIn:</strong> </li>
+                            <li class="list-group-item"><strong>Phone:</strong> </li>
+                            <li class="list-group-item"><strong>Location:</strong> {{ profile.place }}</li>
                         </ul>
                     </div>
                 </div>
@@ -57,16 +62,13 @@
                     <div class="card-body">
                         <h5 class="card-title">Work Experience</h5>
                         <div class="list-group">
+                            {% for experience in profile.experiences.all %}
                             <div class="list-group-item">
-                                <h6 class="mb-1">Post Title 1</h6>
-                                <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie.</p>
-                                <small>Posted on 2023-07-13</small>
+                                <h6 class="mb-1">{{ experience.job_title }} at {{ experience.employer }}</h6>
+                                <p class="mb-1">{{ experience.city }}, {{ experience.country }}</p>
+                                <small>{{ experience.start_date }} &mdash; {{ experience.end_date }}</small>
                             </div>
-                            <div class="list-group-item">
-                                <h6 class="mb-1">Post Title 2</h6>
-                                <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie.</p>
-                                <small>Posted on 2023-07-12</small>
-                            </div>
+                            {% endfor %}
                             <!-- Add more posts here -->
                         </div>
                     </div>

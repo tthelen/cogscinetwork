@@ -10,10 +10,10 @@
     <meta name="author" content="" />
     {% block meta %}
     {% endblock %}
-    <title>{% block title %}CogSci network{% endblock %}</title>
+    <title>CogSci Network BETA - {% block title %}CogSci network{% endblock %}</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico'%}" />
-   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Custom Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,7 +37,7 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'memberlist' %}">Member list</a></li>
                             {% if user.is_authenticated %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'settings' %}">Settings</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'profile_update' user.profile.pk %}">Profile</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'profile_show' user.profile.pk %}">Profile</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                             {% else %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'django_registration_register' %}">Join</a></li>

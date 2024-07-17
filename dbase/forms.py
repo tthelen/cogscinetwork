@@ -20,7 +20,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
             model = Profile
             # some fields are not editable
-            exclude = ('valid', 'user', 'nickname')
+            exclude = ('valid', 'user', 'last_activity')
             widgets = {
                 'pronouns': forms.TextInput(attrs={'list': 'pronouns-list'}),
         }
