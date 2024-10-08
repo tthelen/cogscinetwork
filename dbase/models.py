@@ -31,6 +31,7 @@ class Profile(models.Model):
     instagram = models.URLField(max_length=200, blank=True)
     phone = models.CharField(max_length=200, blank=True)
     profile_pic = models.ImageField(upload_to=profile_pic_filename, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png'])], blank=True)
+    otherthings = models.TextField(null=True, blank=True)
 
     def check_validity(self):
         """

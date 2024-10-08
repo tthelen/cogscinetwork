@@ -113,6 +113,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         experiences = context['experiences']
         academics = context['academics']
         self.object = form.save()
+        otherthings = self.request.POST.get('otherthings', None)
+        self.object.otherthings = otherthings
+        self.object.save()
         self.object.check_validity()
         if experiences.is_valid():
             experiences.instance = self.object

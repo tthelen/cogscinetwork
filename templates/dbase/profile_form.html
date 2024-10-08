@@ -30,7 +30,8 @@
       {% bootstrap_form form %}
 
 
-      <h2 class="title">Academic Carreer</h2>
+      <h2 class="title">Studies and Academic Carreer</h2>
+          <h5 class="text-muted">Please provide info that you think others might find useful. Don't forget your Cognitive Science experience!</h5>
           <table class="table">
                {{ academics.management_form }}
                {% for form in academics.forms %}
@@ -62,6 +63,7 @@
 
 
       <h2 class="title">Work Experience</h2>
+      <h5 class="text-muted">Please provide info that you think others might find useful.</h5>
       <table class="table">
            {{ experiences.management_form }}
            {% for form in experiences.forms %}
@@ -91,9 +93,14 @@
                {% endfor %}
       </table>
 
+      <h2 class="title">Other things</h2>
+      <h5 class="text-muted">Please provide all info that you think others might find useful. Do contribute to Open Source projects? Are you experienced in dog sitter? Have you founded a non-profit organization?</h5>
+      <div class="mb-3">
+        <textarea class="form-control" id="other things" placeholder="Enter text" name="otherthings" rows="5">{{ object.otherthings  }}</textarea>
+      </div>
+
         <button class="btn btn-primary"  type="submit" value="Save"/>Save</button> &nbsp; &nbsp;
          <a class="btn btn-outline-primary" href="{% url 'memberlist' %}">Cancel</a>
-
 
       <datalist id="pronouns-list">
                 <option value="he/him">
