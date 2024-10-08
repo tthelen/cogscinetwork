@@ -32,6 +32,20 @@ Install the Python packages:
 pip install -r requirements.txt
 ```
 
-### Starting Django
+### Setting up the database
 
-...
+```bash
+python manage.py migrate
+```
+
+Do this again after each code update!
+
+### Running the development server
+
+Start the Django development server:
+
+```bash
+python manage.py runserver
+```
+
+Visit http://127.0.0.1:8000 in your browser to view the app.
