@@ -54,7 +54,7 @@ class Profile(models.Model):
         :return: string
         """
         for acad in self.academics.order_by('-start_date'):
-            if acad.university == 'Universität Osnabrück':
+            if 'Osnabrück' in acad.university or 'Osnabrueck' in acad.university:
                 return acad.__str__()
         for exp in self.experiences.order_by('-start_date'):
             if exp.city == 'Osnabrück':

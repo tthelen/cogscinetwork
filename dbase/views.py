@@ -164,7 +164,7 @@ class SendMessageView(View):
             body=message+" \n\nThis message was sent by {} {} via the CogSci Network.".format(request.user.profile.firstname, request.user.profile.lastname),
             # from_email='cogsci-network@uni-osnabrueck.de',  # use default from email (configured in settings)
             to=[recipient.email],
-            cc=[request.user.email],
+            cc=[], # to send a copy to the sender for debugging:: request.user.email
             reply_to=[request.user.email]
         )
         print("Sending email to "+recipient.email)
