@@ -152,6 +152,9 @@ ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window
 REGISTRATION_OPEN = True
 REGISTRATION_SALT = "cogscinetwork.registration.salt"  # does not need to be secret
 
+# For debugging purposes, we use the console backend
+# For production, we should switch to a real backend
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # if local_settings.py exists, import it
 try:
