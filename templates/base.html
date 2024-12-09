@@ -21,7 +21,9 @@
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{% static 'css/styles.css'%}" rel="stylesheet" />
+    {% comment %} 'css/styles.css' is bootstrap 5. Probably not needed anymore as we use Tailwind CSS {% endcomment %}
+    {% comment %} <link href="{% static 'css/styles.css'%}" rel="stylesheet" /> {% endcomment %}
+    <link href="{% static 'css/global_tailwind.css' %}" rel="stylesheet">
   </head>
 
     <body class="d-flex flex-column h-100">

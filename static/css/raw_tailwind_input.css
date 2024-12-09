@@ -1,0 +1,4 @@
+/* raw_tailwind_input.css --compile with `npm run build-css`--> global_tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

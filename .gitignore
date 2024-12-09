@@ -215,3 +215,8 @@ ENV/
 
 # ignore local_settings
 cogscinetwork/local_settings.py
+node_modules
+
+# I am not sure if we want to commit the generated tailwidn file or not.
+# In principle it can be generated and thus doesn't need to be version control
+static/css/global_tailwind.css
