@@ -1,0 +1,139 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        {% block meta %}
+        {% endblock %}
+        <title>CogSci Network BETA - {% block title %}CogSci network{% endblock %}</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico'%}" />
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <!-- Custom Google font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+            rel="stylesheet" />
+
+        <link href="{% static 'css/global_tailwind.css' %}" rel="stylesheet">
+    </head>
+    <body class="min-h-dvh flex flex-col m-0 ">
+        <dialog id="main-nav-dialog" class="absolute w-full h-full m-0 p-4" style="background: #333333AA" >
+            <div class="bg-slate-200 p-12 rounded-3xl drop-shadow-md">
+                <div class="flex flex-row justify-between">                        
+                    <ul class="font-bold flex flex-row">
+                        {% if user.is_authenticated %}
+                            <li class="p-4 m-4">
+                                <a class="" href="{% url 'settings' %}">Settings</a>
+                            </li>
+                            <li>
+                                <a class="" href="{% url 'profile_show' user.profile.pk %}">Profile</a>
+                            </li>                            
+                            <li>
+                                <a class="" href="{% url 'logout' %}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="p-1 m-1">                    
+                                <a class="" href="{% url 'login' %}">Login</a>
+                            </li>            
+                            <li class="p-1 m-1">
+                                <a class="" href="{% url 'django_registration_register' %}">Join</a>
+                            </li>                 
+                        {% endif %}
+                    </ul>             
+                    <button id="main-nav-close-btn" aria-label="close navigation dialog" class="relative bg-gray-600 text-white px-4 rounded-lg" style="top: -2rem; right: -2rem;">X</button>       
+                </div>                
+            </div>                
+        </dialog>
+
+        <main class="h-full">
+            {% comment %} Navbar adapted from https://flowbite.com/docs/components/navbar/ {% endcomment %}
+            <nav role="navigation" class="bg-white border-gray-200 border-b-2">
+                <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                    <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                        <img src="{% static 'assets/cogsci_connect_logo.svg' %}" class="h-14" alt="Flowbite Logo" />
+                        <span class="self-center text-2xl font-semibold whitespace-nowrap">CogSci Connect</span>
+                    </a>
+                    <button id="main-nav-toggle-btn" data-collapse-toggle="navbar-default" type="button"
+                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        aria-controls="navbar-default" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 17 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 1h15M1 7h15M1 13h15" />
+                        </svg>
+                    </button>
+                    <script>
+                        // main-nav-dialog open/close script for mobile viewport (media queries hides links and show burger button)
+                        const dialog = document.querySelector("#main-nav-dialog");
+                        const showButton = document.querySelector("#main-nav-toggle-btn");
+                        const closeButton = document.querySelector("#main-nav-close-btn");
+
+                        showButton.addEventListener("click", () => {
+                            dialog.showModal();
+                        });
+                        closeButton.addEventListener("click", () => {
+                            dialog.close();
+                        });
+                    </script>
+                    <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                        <!-- TODO pass current page into template as variable then apply aria-current="page" on respective <a> tag-->
+                        <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+                            {% if user.is_authenticated %}
+                                <li>
+                                    <a class="" href="{% url 'settings' %}">Settings</a>
+                                </li>
+                                <li>
+                                    <a class="" href="{% url 'profile_show' user.profile.pk %}">Profile</a>
+                                </li>                            
+                                <li>
+                                    <a class="" href="{% url 'logout' %}">Logout</a>
+                                </li>
+                            {% else %}                                
+                                <li>                            
+                                    <a href="{% url 'login' %}" class="gap-2.5 self-stretch px-8 py-2.5 my-auto font-medium rounded-xl border-2 border-violet-500 border-solid text-neutral-700 max-md:px-5">Login</a>
+                                </li>            
+                                <li>
+                                    <a href="{% url 'django_registration_register' %}" class="gap-2.5 self-stretch px-8 py-2.5 my-auto font-bold bg-violet-500 rounded-xl text-zinc-100 max-md:px-5">Join</a> 
+                                </li>
+                            {% endif %}
+                        </ul>                  
+                    </div>
+                </div>
+            </nav>
+
+            <div class="bg-white py-4 mt-auto">
+                <div class="container px-5">
+                    <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                        {% bootstrap_messages %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page content-->
+            {% block content %}
+            {% endblock %}
+        </main>
+        <footer class="flex-grow flex flex-col justify-end">
+            <div class="relative bottom-0 mt-auto p-4 bg-gray-700 w-full h-full text-white py-4">            
+                <div class="flex flex-row justify-between ">           
+                    <div>
+                        <a class="font-bold" href="#!">Privacy</a>
+                        <span class="mx-1">&middot;</span>
+                        <a class="font-bold" href="#!">Terms</a>
+                        <span class="mx-1">&middot;</span>
+                        <a class="font-bold" href="#!">Contact / Impressum</a>
+                    </div>
+                    <div>Copyright &copy; CogSci Network {% now "Y" %}</div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

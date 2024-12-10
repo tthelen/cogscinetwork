@@ -1,0 +1,45 @@
+{% extends "base_tailwind.html" %}
+{% comment %} {% extends "base57_tailwind.html" %} {% endcomment %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    <style>
+        .text-gradient {
+            background: #1e30f3;
+            background:
+                -webkit-linear-gradient(315deg, #1e30f3 0%, #e21e80 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+        }
+        .image-inset-shadow { 
+            position: relative; 
+            -webkit-box-shadow: inset 0 0 10px 10px #000;    
+            -moz-box-shadow: inset 0 0 10px 10px #000;
+            box-shadow: inset 0 0 10px 10px #000;
+         
+         }
+        .box-shadow {            
+            {% comment %} box-shadow: 0 0 6px 8px 5px white inset; {% endcomment %}
+            box-shadow: inset 0px 0px 15px 5px #fff;
+        }
+        .box-shadow img {
+            display: block;
+            position: relative;
+            z-index: -1;
+        }
+    </style>
+    <div class="flex flex-row justify-around">        
+        <div class="flex flex-col w-full text-center">
+            <div class="flex flex-col text-2xl font-light text-black max-md:max-w-full">
+              <p>Become a part of Osnabrück's</p>
+              <p class="mt-4 max-md:max-w-full">
+                <strong>International</strong> | <strong>Intergenerational</strong> | <strong>Interdisciplinary</strong>
+              </p>
+            </div>
+            <span class="mt-6"><h2 class="p-2 text-gradient w-full text-5xl font-bold max-md:max-w-full max-md:text-4xl">CogSci Network</h2></span>
+        </div>        
+        <div class="box-shadow flex-grow w-full"><img class="box-shadow w-full" src="{% static 'assets/frontpage.jpg' %}"></div>
+    </div>
+{% endblock %}

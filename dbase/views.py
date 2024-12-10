@@ -38,6 +38,28 @@ class HomeView(View):
         else:
             return render(request, "dbase/home.html", {'member_count': member_count})
 
+class HomeViewTailwind(View):
+
+    def get(self, request):
+
+        # count the total number of valid members
+        member_count = Profile.objects.filter(valid=True).count()
+
+        # check if we have a logged in user
+        if request.user.is_authenticated:
+            if not request.user.profile.valid:
+                # add django message: please update your profile
+                messages.add_message(request, messages.INFO, 'Please update your profile. Fill all required fields and add your Cognitive Science at Universität Osnabrück related experiences.')
+                # redirect to profile update page
+                return redirect('profile_update', pk=request.user.profile.pk)
+
+            # count how many users were active in the last 24 hours
+            users_active_last_24h = Profile.objects.filter(last_activity__gte=timezone.now() - timezone.timedelta(days=1)).count()
+
+            return render(request, "dbase/dashboard.html", {'user': request.user, 'users_active_last_24h': users_active_last_24h, 'member_count': member_count})
+        else:
+            return render(request, "dbase/home_tailwind.html", {'member_count': member_count})
+
 
 
 class SettingsView(LoginRequiredMixin, TemplateView):
